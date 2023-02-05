@@ -36,7 +36,7 @@ export const createApiForm = (containerEl: HTMLElement, plugin: AiAssistantPlugi
                 plugin.settings.temperature = temperature
 
                 await plugin.saveSettings()
-                new Notice('OpenAI API Key updated')
+                new Notice('AI Assistant settings saved.')
             })
         })
 }
