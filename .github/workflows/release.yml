@@ -33,7 +33,7 @@ jobs:
                   VERSION: ${{ github.ref }}
               with:
                   tag_name: ${{ github.ref }}
-                  release_name: ${{ github.ref }}
+                  title: ${{ github.ref }}
                   draft: false
                   prerelease: false
             - name: Upload zip file
