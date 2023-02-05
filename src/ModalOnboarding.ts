@@ -1,5 +1,5 @@
 import { App, Modal, Setting } from 'obsidian'
-import {createHelpLinks} from "./helpLinks";
+import { createHelpLinks } from './helpLinks'
 
 export class ModalOnBoarding extends Modal {
     constructor(app: App) {
@@ -20,13 +20,15 @@ export class ModalOnBoarding extends Modal {
         })
 
         // add twitter link
-        contentEl.createEl('p', {
-            text: 'If you get any issues, please let me know on Twitter '
-        }).createEl('a', {
-            text: '@duocdev',
-            cls: 'mod-cta',
-            href: 'https://twitter.com/duocdev'
-        })
+        contentEl
+            .createEl('p', {
+                text: 'If you get any issues, please let me know on Twitter '
+            })
+            .createEl('a', {
+                text: '@duocdev',
+                cls: 'mod-cta',
+                href: 'https://twitter.com/duocdev'
+            })
     }
 
     onClose() {

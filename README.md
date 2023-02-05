@@ -29,7 +29,6 @@ If your cursor is at the end of the paragraph, the plugin will suggest text to c
 
 [View demo](https://youtu.be/E0b9k6GlyL4)
 
-
 ### Text summarization
 
 1. Select the text you want to summarize.

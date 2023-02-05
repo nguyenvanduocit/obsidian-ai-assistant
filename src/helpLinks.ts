@@ -3,7 +3,7 @@ export const createHelpLinks = (containerEl: HTMLElement) => {
     helpContainerEl.createEl('a', {
         attr: {
             style: 'display:block',
-            href: 'https://youtu.be/0cWN_JhoZm4',
+            href: 'https://youtu.be/0cWN_JhoZm4'
         },
         text: `AI file rename`
     })
@@ -11,7 +11,7 @@ export const createHelpLinks = (containerEl: HTMLElement) => {
     helpContainerEl.createEl('a', {
         attr: {
             style: 'display:block',
-            href: 'https://www.youtube.com/watch?v=qU3DSY7eXA8&ab_channel=fridayDeployment',
+            href: 'https://www.youtube.com/watch?v=qU3DSY7eXA8&ab_channel=fridayDeployment'
         },
         text: `Summarize text`
     })
@@ -19,7 +19,7 @@ export const createHelpLinks = (containerEl: HTMLElement) => {
     helpContainerEl.createEl('a', {
         attr: {
             style: 'display:block',
-            href: 'https://www.youtube.com/watch?v=qU3DSY7eXA8&ab_channel=fridayDeployment',
+            href: 'https://www.youtube.com/watch?v=qU3DSY7eXA8&ab_channel=fridayDeployment'
         },
         text: `Explain`
     })

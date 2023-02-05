@@ -1,4 +1,12 @@
-import {addIcon, Editor, EditorPosition, Menu, Notice, Plugin, TFile} from 'obsidian'
+import {
+    addIcon,
+    Editor,
+    EditorPosition,
+    Menu,
+    Notice,
+    Plugin,
+    TFile
+} from 'obsidian'
 import { SettingTab } from './SetingTab'
 import { ModalOnBoarding } from './ModalOnboarding'
 import { Configuration, OpenAIApi } from 'openai'
@@ -7,7 +15,7 @@ import { enqueue } from './queue'
 import { CanvasView } from './CanvasView'
 // @ts-ignore-next-line
 import logo from './logo.svg?raw'
-import {ModalLoading} from "./ModalLoading";
+import { ModalLoading } from './ModalLoading'
 
 interface PluginSetting {
     isFirstRun: boolean
@@ -115,8 +123,10 @@ export default class AiAssistantPlugin extends Plugin {
             id: 'ai-rename-file',
             name: 'Rename file',
             editorCallback: async (editor: Editor) => {
-                await this.aiRenameFile(this.app.workspace.getActiveFile() as TFile)
-            },
+                await this.aiRenameFile(
+                    this.app.workspace.getActiveFile() as TFile
+                )
+            }
         })
     }
 

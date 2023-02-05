@@ -7,6 +7,9 @@ export class ModalLoading extends Modal {
         this.modalEl.addClass('ai-assistant-modal-loading')
 
         const { contentEl } = this
-        contentEl.createEl('div', { text: 'AI Assistant is processing', cls:"center" })
+        contentEl.createEl('div', {
+            text: 'AI Assistant is processing',
+            cls: 'center'
+        })
     }
 }

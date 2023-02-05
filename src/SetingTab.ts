@@ -1,7 +1,7 @@
 import { App, PluginSettingTab, Setting } from 'obsidian'
 import AiAssistantPlugin from './main'
 import { createApiForm } from './apiForm'
-import {createHelpLinks} from "./helpLinks";
+import { createHelpLinks } from './helpLinks'
 
 export class SettingTab extends PluginSettingTab {
     plugin: AiAssistantPlugin
