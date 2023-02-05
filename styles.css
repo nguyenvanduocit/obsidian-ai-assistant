@@ -1,4 +1,17 @@
+.ai-assistant-view * {
+    box-sizing: border-box;
+}
+
 .ai-assistant-view {
-    padding: 0 !important;
-    overflow: hidden !important;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.ai-assistant-view ai-assistant-response {
+    font-size: 1.2em;
+}
+
+.ai-assistant.svg-icon path{
+    stroke: var(--icon-color) !important;
 }
