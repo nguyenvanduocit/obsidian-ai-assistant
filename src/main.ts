@@ -22,7 +22,7 @@ const DEFAULT_SETTINGS: Partial<PluginSetting> = {
     openaiApiKey: '',
     temperature: 0.5,
     explainTemplate: `explain:\n\n"""\n{text}\n"""`,
-    summarizeTemplate: `short summarize:\n\n"""\n{text}\n"""`
+    summarizeTemplate: `{text}\n\nTl;dr`
 }
 
 export const VIEW_TYPE_EXAMPLE = 'ai-assistant-view'
@@ -149,13 +149,15 @@ export default class AiAssistantPlugin extends Plugin {
                 await openView(this.app.workspace, VIEW_TYPE_EXAMPLE)
             }
 
-            if (editor.getSelection() !== '') {
+            const selection = editor.getSelection().trim()
+
+            if (selection !== '') {
                 menu.addItem((item) => {
-                    item.setTitle('AI explain').onClick(() => {
-                        summary(
+                    item.setTitle('AI explain').onClick(async () => {
+                        await summary(
                             this.settings.explainTemplate.replace(
                                 '{text}',
-                                editor.getSelection()
+                                selection
                             )
                         )
                     })
@@ -163,11 +165,11 @@ export default class AiAssistantPlugin extends Plugin {
 
                 if (editor.getSelection().split(' ').length > 10) {
                     menu.addItem((item) => {
-                        item.setTitle('AI summarize').onClick(() => {
-                            summary(
+                        item.setTitle('AI summarize').onClick(async () => {
+                            await summary(
                                 this.settings.summarizeTemplate.replace(
                                     '{text}',
-                                    editor.getSelection()
+                                    selection
                                 )
                             )
                         })
@@ -175,11 +177,13 @@ export default class AiAssistantPlugin extends Plugin {
                 }
             }
 
-            menu.addItem((item) => {
-                item.setTitle('AI complete').onClick(async () => {
-                    await this.aiComplete(editor)
+            if (editor.getSelection().trim() === '') {
+                menu.addItem((item) => {
+                    item.setTitle('AI complete').onClick(async () => {
+                        await this.aiComplete(editor)
+                    })
                 })
-            })
+            }
         })
     }
 

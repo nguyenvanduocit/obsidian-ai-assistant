@@ -11,7 +11,7 @@ export const createApiForm = (
     new Setting(containerEl)
         .setName('OpenAI API Key')
         .setDesc(
-            'You can get your API key from https://beta.openai.com/account/api-keys'
+            'You can get your API key from https://platform.openai.com/account/api-keys'
         )
         .addText((text) =>
             text
