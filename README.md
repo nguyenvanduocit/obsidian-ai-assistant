@@ -27,7 +27,7 @@ A plugin for Obsidian that uses OpenAI's API to assist users in their note-takin
 
 If your cursor is at the end of the paragraph, the plugin will suggest text to complete the paragraph. If your cursor is in the new line, the plugin will suggest text based on the whole document.
 
-[View demo](https://www.youtube.com/watch?v=qU3DSY7eXA8)
+[View demo](https://youtu.be/E0b9k6GlyL4)
 
 
 ### Text summarization
