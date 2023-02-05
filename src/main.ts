@@ -7,14 +7,12 @@ interface PluginSetting {
     isFirstRun: boolean
     openaiApiKey: string
     temperature: number
-    gates: Record<string, GateFrameOption>
 }
 
 const DEFAULT_SETTINGS: PluginSetting = {
     isFirstRun: true,
     openaiApiKey: '',
-    temperature: 0.5,
-    gates: {}
+    temperature: 0.5
 }
 
 export default class AiAssistantPlugin extends Plugin {
