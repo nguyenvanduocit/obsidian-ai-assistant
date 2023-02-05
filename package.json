@@ -1,17 +1,21 @@
 {
     "name": "obsidian-ai-assistant",
-    "version": "0.0.5",
+    "version": "0.0.6",
     "description": "Embed any website to Obsidian, from now all, you have anything you need in one place.",
     "main": "main.js",
     "scripts": {
         "dev": "node esbuild.config.mjs",
         "build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production",
         "version": "node version-bump.mjs && git add manifest.json versions.json",
-        "format": "prettier --write ."
+        "format": "prettier --write .",
+        "release": "standard-version"
     },
     "keywords": [],
     "author": "",
     "license": "MIT",
+    "standard-version": {
+        "t": ""
+    },
     "devDependencies": {
         "@types/chrome": "^0.0.203",
         "@types/node": "^16.11.6",
@@ -21,6 +25,7 @@
         "esbuild": "0.14.47",
         "obsidian": "latest",
         "prettier": "^2.8.1",
+        "standard-version": "^9.5.0",
         "tslib": "2.4.0",
         "typescript": "4.7.4"
     },
