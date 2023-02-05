@@ -1,0 +1,17 @@
+.ai-assistant-view {
+    padding: 0 !important;
+    overflow: hidden !important;
+}
+
+.ai-assistant-view webview {
+    width: 100%;
+    height: 100%;
+    border: none;
+    background-color: #fff;
+}
+
+.gate-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
