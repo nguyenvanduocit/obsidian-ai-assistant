@@ -122,7 +122,8 @@ export default class AiAssistantPlugin extends Plugin {
             return ''
         }
         // remove quote
-        
+
+
         return response.data.choices[0].text.trim()
     }
 

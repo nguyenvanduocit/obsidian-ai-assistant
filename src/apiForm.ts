@@ -24,7 +24,6 @@ export const createApiForm = (containerEl: HTMLElement, plugin: AiAssistantPlugi
                 .setLimits(0, 1, 0.1)
                 .setValue(plugin.settings.temperature)
                 .onChange(async (value) => {
-
                     temperature = value
                 })
         )
