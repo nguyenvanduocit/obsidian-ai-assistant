@@ -1,6 +1,7 @@
 import { App, PluginSettingTab, Setting } from 'obsidian'
 import AiAssistantPlugin from './main'
-import {createApiForm} from "./apiForm";
+import { createApiForm } from './apiForm'
+import {createHelpLinks} from "./helpLinks";
 
 export class SettingTab extends PluginSettingTab {
     plugin: AiAssistantPlugin
@@ -18,26 +19,13 @@ export class SettingTab extends PluginSettingTab {
 
         createApiForm(containerEl, this.plugin)
 
-
         containerEl.createEl('hr')
 
         const settingContainerEl = containerEl.createDiv('setting-container')
 
         containerEl.createEl('h3', { text: 'Help' })
 
-        containerEl.createEl('small', {
-            attr: {
-                style: 'display: block; margin-bottom: 5px'
-            },
-            text: 'When delete or edit a gate, you need to reload Obsidian to see the changes.'
-        })
-
-        containerEl.createEl('small', {
-            attr: {
-                style: 'display: block; margin-bottom: 1em;'
-            },
-            text: `To reload Obsidian, you can use the menu "view -> Force reload" or "Reload App" in the command palette.`
-        })
+        createHelpLinks(containerEl)
 
         new Setting(containerEl)
             .setName('Follow me on Twitter')

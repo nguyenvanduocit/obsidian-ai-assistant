@@ -20,11 +20,12 @@ export class CanvasView extends ItemView {
         this.responseEl = this.contentEl.createEl('div', {
             cls: 'ai-assistant-response',
             attr: {
-                contenteditable: 'true',
+                contenteditable: 'true'
             }
         })
 
-        this.responseEl.innerText = 'To get started, select some text and press right-click > AI Assistant'
+        this.responseEl.innerText =
+            'To get started, select some text and press right-click > AI Assistant'
 
         await this.processQueue()
 

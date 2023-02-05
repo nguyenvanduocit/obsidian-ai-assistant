@@ -1,8 +1,6 @@
 const queue: Array<RequestMessage> = []
 let onQueueAddedFn: () => void | undefined
 
-
-
 export const enqueue = (item: RequestMessage) => {
     queue.push(item)
 

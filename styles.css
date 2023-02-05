@@ -12,6 +12,10 @@
     font-size: 1.2em;
 }
 
-.ai-assistant.svg-icon path{
+.ai-assistant.svg-icon path {
     stroke: var(--icon-color) !important;
+}
+
+.ai-assistant-modal-loading .modal-close-button {
+    display: none;
 }

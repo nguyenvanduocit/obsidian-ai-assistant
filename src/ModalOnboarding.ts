@@ -1,9 +1,8 @@
-import {App, Modal, Setting} from 'obsidian'
+import { App, Modal, Setting } from 'obsidian'
+import {createHelpLinks} from "./helpLinks";
 
 export class ModalOnBoarding extends Modal {
-    constructor(
-        app: App,
-    ) {
+    constructor(app: App) {
         super(app)
     }
 
@@ -11,32 +10,22 @@ export class ModalOnBoarding extends Modal {
         const { contentEl } = this
         contentEl.createEl('h2', { text: 'Welcome to AI Assistant' })
         contentEl.createEl('p', {
-            text: 'AiAssistant will support you in your daily note taking.'
-        })
-        contentEl.createEl('h2', {
-                    text: 'AI Rename'
-        })
-        contentEl.createEl('iframe', {
-            attr: {
-                src: 'https://www.youtube.com/embed/0cWN_JhoZm4',
-                width: '100%',
-                height: '300px',
-            }
+            text: 'Before you start, take a look at the video below to see how it works.'
         })
 
-        contentEl.createEl('h2', {
-                    text: 'AI Summarize and Explain'
-        })
-        contentEl.createEl('iframe', {
-            attr: {
-                src: 'https://www.youtube.com/embed/qU3DSY7eXA8',
-                width: '100%',
-                height: '300px',
-            }
-        })
+        createHelpLinks(contentEl)
 
         contentEl.createEl('p', {
-            text: 'But now you have to provide OpenAI API key in the setting tab.'
+            text: 'After that, please set your OpenAI API key in the plugin settings.'
+        })
+
+        // add twitter link
+        contentEl.createEl('p', {
+            text: 'If you get any issues, please let me know on Twitter '
+        }).createEl('a', {
+            text: '@duocdev',
+            cls: 'mod-cta',
+            href: 'https://twitter.com/duocdev'
         })
     }
 
