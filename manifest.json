@@ -3,12 +3,11 @@
     "name": "AI Assistant",
     "version": "0.0.14",
     "minAppVersion": "0.15.0",
-    "description": "Embed any website to Obsidian, from now all, you have anything you need in one place.",
+    "description": "A plugin for Obsidian that uses OpenAI's API to assist users in their note-taking and writing process",
     "author": "duocnv",
     "authorUrl": "https://twitter.com/duocdev",
     "fundingUrl": {
         "Buy Me a Coffee": "https://paypal.me/duocnguyen",
         "Follow me": "https://twitter.com/duocdev"
-    },
-    "isDesktopOnly": true
+    }
 }
