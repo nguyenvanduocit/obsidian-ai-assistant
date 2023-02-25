@@ -23,6 +23,9 @@ interface PluginSetting {
     temperature: number
     explainTemplate: string
     summarizeTemplate: string
+    fixWritingTemplate: string
+    makeShorter: string
+    makeLonger: string
 }
 
 const DEFAULT_SETTINGS: Partial<PluginSetting> = {
@@ -30,7 +33,10 @@ const DEFAULT_SETTINGS: Partial<PluginSetting> = {
     openaiApiKey: '',
     temperature: 0.5,
     explainTemplate: `explain:\n\n"""\n{text}\n"""`,
-    summarizeTemplate: `{text}\n\nTl;dr`
+    summarizeTemplate: `{text}\n\nTl;dr`,
+    fixWritingTemplate: `Correct this to standard English: {text}\n`,
+    makeShorter: `Make this paragraph shorter: {text}\n`,
+    makeLonger: `Make this paragraph longer: {text}\n`
 }
 
 export default class AiAssistantPlugin extends Plugin {
@@ -147,23 +153,23 @@ export default class AiAssistantPlugin extends Plugin {
             })
         )
     }
-
+    async callOpenAiApi(instruction: string) {
+        enqueue({
+            prompt: instruction
+        })
+        await openView(this.app.workspace, VIEW_TYPE_AI_EXPLAIN)
+    }
     setupEditorMenu() {
         this.registerEvent(
             this.app.workspace.on('editor-menu', (menu, editor, view) => {
-                const summary = async (instruction: string) => {
-                    enqueue({
-                        prompt: instruction
-                    })
-                    await openView(this.app.workspace, VIEW_TYPE_AI_EXPLAIN)
-                }
+
 
                 const selection = editor.getSelection().trim()
 
                 if (selection !== '') {
                     menu.addItem((item) => {
                         item.setTitle('AI explain').onClick(async () => {
-                            await summary(
+                            await this.callOpenAiApi(
                                 this.settings.explainTemplate.replace(
                                     '{text}',
                                     selection
@@ -172,10 +178,52 @@ export default class AiAssistantPlugin extends Plugin {
                         })
                     })
 
+                    menu.addItem((item) => {
+                        item.setTitle('AI fix spelling & grammar').onClick(async () => {
+                            await this.callOpenAiApi(
+                                this.settings.fixWritingTemplate.replace(
+                                    '{text}',
+                                    selection
+                                )
+                            )
+                        })
+                    })
+
+                    menu.addItem((item) => {
+                        item.setTitle('AI make shorter').onClick(async () => {
+                            await this.callOpenAiApi(
+                                this.settings.makeShorter.replace(
+                                    '{text}',
+                                    selection
+                                )
+                            )
+                        })
+                    })
+
+                    menu.addItem((item) => {
+                        item.setTitle('AI make longer').onClick(async () => {
+                            await this.callOpenAiApi(
+                                this.settings.makeLonger.replace(
+                                    '{text}',
+                                    selection
+                                )
+                            )
+                        })
+                    })
+
+                    menu.addItem((item) => {
+                        item.setTitle('AI generate table').onClick(async () => {
+                            await this.callOpenAiApi(
+                                "Generate a table from the following text: \n\n```\n" + selection + "\n```\n\n"
+                            )
+                        })
+                    })
+
+
                     if (editor.getSelection().split(' ').length > 10) {
                         menu.addItem((item) => {
                             item.setTitle('AI summarize').onClick(async () => {
-                                await summary(
+                                await this.callOpenAiApi(
                                     this.settings.summarizeTemplate.replace(
                                         '{text}',
                                         selection
@@ -186,7 +234,7 @@ export default class AiAssistantPlugin extends Plugin {
                     }
                 }
 
-                if (editor.getSelection().trim() === '') {
+                if (selection === '') {
                     menu.addItem((item) => {
                         item.setTitle('AI complete').onClick(async () => {
                             await this.aiComplete(editor)
@@ -220,11 +268,13 @@ export default class AiAssistantPlugin extends Plugin {
         new Notice('Generating file name...')
         // update status bar
         const prompt =
-            `write short title for this markdown note, (no quote): \n"""\n` +
+            `write short title for this note: \n\n` +
             fileContent +
-            `\n"""`
+            `\n\n`
 
-        const fileName = await this.processPrompt(prompt)
+        let fileName = await this.processPrompt(prompt)
+        // trim " and '
+        fileName = fileName.replace(/^['"]/, '').replace(/['"]$/, '')
         if (!fileName) {
             new Notice('Cannot generate file name')
             return
