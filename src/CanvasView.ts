@@ -2,7 +2,7 @@ import { ItemView, WorkspaceLeaf, Menu, Notice } from 'obsidian'
 import SharePlugin from './main'
 import { dequeue, onQueueAdded } from './queue'
 
-export const ViewType = 'ai-assistant-view'
+export const VIEW_TYPE_AI_EXPLAIN = 'ai-assistant-view'
 
 export class CanvasView extends ItemView {
     private plugin: SharePlugin
@@ -64,7 +64,7 @@ export class CanvasView extends ItemView {
     }
 
     getViewType(): string {
-        return ViewType
+        return VIEW_TYPE_AI_EXPLAIN
     }
 
     getDisplayText(): string {
