@@ -4,7 +4,7 @@ import { dequeue, onQueueAdded } from './queue'
 
 export const VIEW_TYPE_AI_EXPLAIN = 'ai-assistant-view'
 
-export class CanvasView extends ItemView {
+export class LeafView extends ItemView {
     private plugin: SharePlugin
     private responseEl: HTMLElement
 
@@ -14,6 +14,16 @@ export class CanvasView extends ItemView {
     }
 
     async onload(): Promise<void> {
+        this.renderView()
+
+        await this.processQueue()
+
+        onQueueAdded(async () => {
+            await this.processQueue()
+        })
+    }
+
+    renderView(): void {
         this.contentEl.empty()
         this.contentEl.addClass('ai-assistant-view')
 
@@ -26,25 +36,24 @@ export class CanvasView extends ItemView {
 
         this.responseEl.innerText =
             'To get started, select some text and press right-click > AI Assistant'
-
-        await this.processQueue()
-
-        onQueueAdded(async () => {
-            await this.processQueue()
-        })
     }
 
     async processQueue() {
         const queuedText = dequeue()
         if (queuedText) {
             this.responseEl.innerText = 'Processing...'
-            await this.processPrompt(queuedText.prompt)
+            await this.processPrompt(queuedText.prompt, queuedText.model)
         }
     }
 
-    async processPrompt(instruction: string) {
+    async processPrompt(instruction: string, model?: string) {
         let prompt = instruction
-        const response = await this.plugin.processPrompt(prompt)
+        const response = await this.plugin.createCompletion(prompt, model)
+        if (!response) {
+            new Notice('Failed to process prompt')
+            return
+        }
+
         this.responseEl.innerText = response
     }
 
