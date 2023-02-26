@@ -3,6 +3,7 @@ convention:
   commitTypes:
     - feat
     - fix
+    - chore
     - perf
     - refactor
     - style
