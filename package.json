@@ -6,7 +6,7 @@
     "scripts": {
         "dev": "node esbuild.config.mjs",
         "build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production",
-        "version": "node version-bump.mjs",
+        "version": "pnpm version (git-conventional-commits version) && node version-bump.mjs",
         "format": "prettier --write ."
     },
     "keywords": [],
