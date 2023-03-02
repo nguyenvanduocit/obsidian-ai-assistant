@@ -1,20 +1,18 @@
 import {
     addIcon,
     Editor,
-    EditorPosition,
-    Menu,
     Notice,
     Plugin,
     TFile
 } from 'obsidian'
 import { SettingTab } from './SetingTab'
 import { ModalOnBoarding } from './ModalOnboarding'
-import { Configuration, OpenAIApi } from 'openai'
 import { openLeafView } from './openLeafView'
 import { enqueue } from './queue'
 import { LeafView, VIEW_TYPE_AI_EXPLAIN } from './LeafView'
 import { ModalLoading } from './ModalLoading'
 import { getOpenaiClient } from './apiClient'
+import { ChatCompletionRequestMessage } from "openai";
 
 interface PluginSetting {
     isFirstRun: boolean
@@ -33,9 +31,9 @@ const DEFAULT_SETTINGS: Partial<PluginSetting> = {
     temperature: 0.5,
     explainTemplate: `explain:\n\n"""\n{text}\n"""`,
     summarizeTemplate: `{text}\n\nTl;dr`,
-    fixWritingTemplate: `Correct this to standard English: {text}\n`,
-    makeShorter: `Make this paragraph shorter: {text}\n`,
-    makeLonger: `Make this paragraph longer: {text}\n`
+    fixWritingTemplate: `Correct this to standard English: \n\n"""\n{text}\n"""`,
+    makeShorter: `Make this paragraph shorter: \n\n"""\n{text}\n"""`,
+    makeLonger: `Make this paragraph longer: \n\n"""\n{text}\n"""`
 }
 
 export default class AiAssistantPlugin extends Plugin {
@@ -77,11 +75,9 @@ export default class AiAssistantPlugin extends Plugin {
         this.setupEditorMenu()
         this.setupCommands()
     }
-
     async onunload() {
         this.app.workspace.detachLeavesOfType(VIEW_TYPE_AI_EXPLAIN)
     }
-
     showLoadingModal() {
         if (this.loadingModal === null) {
             this.loadingModal = new ModalLoading(this.app)
@@ -89,13 +85,11 @@ export default class AiAssistantPlugin extends Plugin {
 
         this.loadingModal.open()
     }
-
     hideLoadingModal() {
         if (this.loadingModal !== null) {
             this.loadingModal.close()
         }
     }
-
     setupCommands() {
         this.addCommand({
             id: 'ai-assistant-complete',
@@ -114,8 +108,16 @@ export default class AiAssistantPlugin extends Plugin {
                 )
             }
         })
-    }
 
+        this.addCommand({
+            id: 'ai-assistant-chat',
+            name: 'Chat',
+            editorCallback: async (editor: Editor) => {
+                editor.replaceSelection("&InvisibleComma;")
+            }
+        })
+
+    }
     setupFileMenu() {
         // file rename
         this.registerEvent(
@@ -136,10 +138,7 @@ export default class AiAssistantPlugin extends Plugin {
         )
     }
     async openRightView(instruction: string, model?: string) {
-        enqueue({
-            prompt: instruction,
-            model: model
-        })
+        enqueue(instruction)
         await openLeafView(this.app.workspace, VIEW_TYPE_AI_EXPLAIN)
     }
     setupEditorMenu() {
@@ -175,8 +174,7 @@ export default class AiAssistantPlugin extends Plugin {
                                 this.settings.fixWritingTemplate.replace(
                                     '{text}',
                                     selection
-                                ),
-                                'text-davinci-edit-001'
+                                )
                             )
                         }
                     )
@@ -219,7 +217,6 @@ export default class AiAssistantPlugin extends Plugin {
             })
         )
     }
-
     // use openai to complete text, then replace selection
     async aiComplete(editor: Editor) {
         const cursor = editor.getCursor()
@@ -229,10 +226,10 @@ export default class AiAssistantPlugin extends Plugin {
         let content: string | undefined
 
         if (line.trim() === '') {
-            content = await this.createCompletion(editor.getValue())
+            content = await this.createCompletion("continue write this:" + editor.getValue())
         } else {
             const text = line.substring(0, cursor.ch)
-            content = await this.createCompletion(text)
+            content = await this.createCompletion("continue write this:" + text)
         }
 
         if (content) {
@@ -241,7 +238,6 @@ export default class AiAssistantPlugin extends Plugin {
 
         this.hideLoadingModal()
     }
-
     async aiRenameFile(file: TFile) {
         let fileContent = await this.app.vault.read(file)
 
@@ -267,29 +263,41 @@ export default class AiAssistantPlugin extends Plugin {
         await this.app.vault.rename(file, newFilePath)
         new Notice('File renamed')
     }
-
     async createCompletion(
-        prompt: string,
+        prompt: string | Array<ChatCompletionRequestMessage>,
         model?: string,
         stop?: string
     ): Promise<string | undefined> {
         this.updateStatusBar('Generating response...')
-
         const client = getOpenaiClient(this.settings.openaiApiKey)
-        const { data } = await client.createCompletion({
-            model: model || 'text-davinci-003',
-            prompt: prompt,
+        let messages: Array<ChatCompletionRequestMessage> = []
+        if (prompt instanceof String) {
+            messages = [
+                {
+                    role: "system",
+                    content: "you are a helpful assistant, you will do anything to answer the user's question",
+                },
+                {
+                    role: "user",
+                    content: prompt as string
+                },
+            ]
+        } else {
+            messages = prompt as Array<ChatCompletionRequestMessage>
+        }
+        // @ts-ignore-next-line
+        const { data } = await client.createChatCompletion({
+            model: model || 'gpt-3.5-turbo',
+            messages: messages,
             temperature: this.settings.temperature,
-            max_tokens: 1000,
+            max_tokens: 2000,
             stop: stop
         })
 
         this.clearStatusBarItem()
-
         // trim new line
-        return data.choices.pop()?.text?.replace(/\n$/, '')
+        return data.choices.pop()?.message?.content?.trim().replace(/\n\n/g, '\n')
     }
-
     // status bar
     statusBarItem: HTMLElement | null = null
     updateStatusBar(text: string) {
@@ -304,7 +312,6 @@ export default class AiAssistantPlugin extends Plugin {
             this.statusBarItem.innerText = ''
         }
     }
-
     // settings
     settings: PluginSetting
     async loadSettings() {
@@ -312,7 +319,6 @@ export default class AiAssistantPlugin extends Plugin {
         // merge default settings
         this.settings = Object.assign({}, DEFAULT_SETTINGS, this.settings)
     }
-
     async saveSettings() {
         await this.saveData(this.settings)
     }

@@ -1,12 +1,13 @@
 import { ItemView, WorkspaceLeaf, Menu, Notice } from 'obsidian'
 import SharePlugin from './main'
 import { dequeue, onQueueAdded } from './queue'
-
+import {createApp, reactive} from 'petite-vue'
 export const VIEW_TYPE_AI_EXPLAIN = 'ai-assistant-view'
-
+import {CreateApp} from './components/chat'
 export class LeafView extends ItemView {
-    private plugin: SharePlugin
+    private readonly plugin: SharePlugin
     private responseEl: HTMLElement
+    private chatView: any;
 
     constructor(leaf: WorkspaceLeaf, plugin: SharePlugin) {
         super(leaf)
@@ -15,12 +16,7 @@ export class LeafView extends ItemView {
 
     async onload(): Promise<void> {
         this.renderView()
-
-        await this.processQueue()
-
-        onQueueAdded(async () => {
-            await this.processQueue()
-        })
+        this.chatView = CreateApp(this.responseEl, this.plugin)
     }
 
     renderView(): void {
@@ -28,22 +24,8 @@ export class LeafView extends ItemView {
         this.contentEl.addClass('ai-assistant-view')
 
         this.responseEl = this.contentEl.createEl('div', {
-            cls: 'ai-assistant-response',
-            attr: {
-                contenteditable: 'true'
-            }
+            cls: 'ai-assistant--container'
         })
-
-        this.responseEl.innerText =
-            'To get started, select some text and press right-click > AI Assistant'
-    }
-
-    async processQueue() {
-        const queuedText = dequeue()
-        if (queuedText) {
-            this.responseEl.innerText = 'Processing...'
-            await this.processPrompt(queuedText.prompt, queuedText.model)
-        }
     }
 
     async processPrompt(instruction: string, model?: string) {

@@ -8,14 +8,70 @@
     flex-direction: column;
 }
 
-.ai-assistant-view ai-assistant-response {
-    font-size: 1.2em;
-}
-
 .ai-assistant.svg-icon path {
     stroke: var(--icon-color) !important;
 }
 
 .ai-assistant-modal-loading .modal-close-button {
     display: none;
+}
+
+.ai-assistant--container {
+    font-size: 15px;
+    display: grid;
+    height: 100%;
+    grid-template-rows: 1fr 50px;
+    grid-template-columns: 1fr;
+}
+
+.ai-assistant--messages {
+    grid-row: 1 / 2;
+    height: 100%;
+    overflow-y: auto;
+}
+
+.ai-assistant--message{
+    margin-bottom: 20px;
+}
+
+.ai-assistant--message.user{
+    display: flex;
+    justify-content: flex-end;
+}
+
+.ai-assistant--message-content{
+    display: inline-block;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: #ffffff17;
+    max-width: 90%;
+    white-space: pre-wrap;
+}
+
+.ai-assistant--input{
+    grid-row: 2 / 3;
+    border-top: 1px solid var(--border-color);
+    padding: 10px 10px;
+
+    display: grid;
+    grid-template-columns: 1fr 100px;
+}
+
+.ai-assistant--input-text{
+    background: var(--background-modifier-form-field);
+    border: var(--input-border-width) solid var(--background-modifier-border);
+    color: var(--text-normal);
+    font-family: inherit;
+    padding: var(--size-4-1) var(--size-4-2);
+    font-size: var(--font-ui-small);
+    border-radius: var(--input-radius);
+    outline: none;
+}
+
+.ai-assistant--input textarea{
+    height: 100%;
+}
+
+.ai-assistant--input button{
+    margin-left: 10px;
 }

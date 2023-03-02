@@ -1,7 +1,7 @@
-const queue: Array<RequestMessage> = []
+const queue: Array<string> = []
 let onQueueAddedFn: () => void | undefined
 
-export const enqueue = (item: RequestMessage) => {
+export const enqueue = (item: string) => {
     queue.push(item)
 
     if (onQueueAddedFn) {

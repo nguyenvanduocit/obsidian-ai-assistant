@@ -6,20 +6,21 @@ export const openLeafView = async (
     position?: FramePosition
 ): Promise<WorkspaceLeaf | undefined> => {
     let leafs = workspace.getLeavesOfType(id)
-    if (leafs.length == 0) {
-        return createView(workspace, id, position)
+    if (leafs.length > 0) {
+        workspace.revealLeaf(leafs[0])
+        return
     }
 
-    let leaf = workspace.getLeavesOfType(id)[0]
+    const leaf = await createView(workspace, id, position)
     workspace.revealLeaf(leaf)
-    return leaf
+    return
 }
 
-const createView = (
-    workspace: Workspace,
-    id: string,
-    position?: FramePosition
-): WorkspaceLeaf | undefined => {
+const createView = async (
+  workspace: Workspace,
+  id: string,
+  position?: FramePosition
+): Promise<WorkspaceLeaf> => {
     let leaf: WorkspaceLeaf | undefined
     switch (position) {
         case 'left':
@@ -34,7 +35,7 @@ const createView = (
             break
     }
 
-    leaf?.setViewState({ type: id, active: true })
+    await leaf?.setViewState({ type: id, active: true })
 
     return leaf
 }

@@ -1,6 +1,6 @@
 declare type FramePosition = 'left' | 'center' | 'right'
 
-declare interface RequestMessage {
-    prompt: string
-    model?: string
+declare type Message = {
+    role: string
+    content: string
 }
