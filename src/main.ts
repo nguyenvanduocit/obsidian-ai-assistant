@@ -1,10 +1,4 @@
-import {
-    addIcon,
-    Editor,
-    Notice,
-    Plugin,
-    TFile
-} from 'obsidian'
+import { addIcon, Editor, Notice, Plugin, TFile } from 'obsidian'
 import { SettingTab } from './SetingTab'
 import { ModalOnBoarding } from './ModalOnboarding'
 import { openLeafView } from './openLeafView'
@@ -12,7 +6,7 @@ import { enqueue } from './queue'
 import { LeafView, VIEW_TYPE_AI_EXPLAIN } from './LeafView'
 import { ModalLoading } from './ModalLoading'
 import { getOpenaiClient } from './apiClient'
-import { ChatCompletionRequestMessage } from "openai";
+import { ChatCompletionRequestMessage } from 'openai'
 
 interface PluginSetting {
     isFirstRun: boolean
@@ -113,10 +107,9 @@ export default class AiAssistantPlugin extends Plugin {
             id: 'ai-assistant-chat',
             name: 'Chat',
             editorCallback: async (editor: Editor) => {
-                editor.replaceSelection("&InvisibleComma;")
+                editor.replaceSelection('&InvisibleComma;')
             }
         })
-
     }
     setupFileMenu() {
         // file rename
@@ -226,10 +219,12 @@ export default class AiAssistantPlugin extends Plugin {
         let content: string | undefined
 
         if (line.trim() === '') {
-            content = await this.createCompletion("continue write this:" + editor.getValue())
+            content = await this.createCompletion(
+                'continue write this:' + editor.getValue()
+            )
         } else {
             const text = line.substring(0, cursor.ch)
-            content = await this.createCompletion("continue write this:" + text)
+            content = await this.createCompletion('continue write this:' + text)
         }
 
         if (content) {
@@ -274,13 +269,14 @@ export default class AiAssistantPlugin extends Plugin {
         if (prompt instanceof String) {
             messages = [
                 {
-                    role: "system",
-                    content: "you are a helpful assistant, you will do anything to answer the user's question",
+                    role: 'system',
+                    content:
+                        "you are a helpful assistant, you will do anything to answer the user's question"
                 },
                 {
-                    role: "user",
+                    role: 'user',
                     content: prompt as string
-                },
+                }
             ]
         } else {
             messages = prompt as Array<ChatCompletionRequestMessage>
@@ -296,7 +292,10 @@ export default class AiAssistantPlugin extends Plugin {
 
         this.clearStatusBarItem()
         // trim new line
-        return data.choices.pop()?.message?.content?.trim().replace(/\n\n/g, '\n')
+        return data.choices
+            .pop()
+            ?.message?.content?.trim()
+            .replace(/\n\n/g, '\n')
     }
     // status bar
     statusBarItem: HTMLElement | null = null

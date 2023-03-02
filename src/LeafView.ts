@@ -1,13 +1,13 @@
 import { ItemView, WorkspaceLeaf, Menu, Notice } from 'obsidian'
 import SharePlugin from './main'
 import { dequeue, onQueueAdded } from './queue'
-import {createApp, reactive} from 'petite-vue'
+import { createApp, reactive } from 'petite-vue'
 export const VIEW_TYPE_AI_EXPLAIN = 'ai-assistant-view'
-import {CreateApp} from './components/chat'
+import { CreateApp } from './components/chat'
 export class LeafView extends ItemView {
     private readonly plugin: SharePlugin
     private responseEl: HTMLElement
-    private chatView: any;
+    private chatView: any
 
     constructor(leaf: WorkspaceLeaf, plugin: SharePlugin) {
         super(leaf)

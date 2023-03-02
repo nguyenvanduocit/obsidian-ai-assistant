@@ -1,12 +1,12 @@
 {
     "name": "obsidian-ai-assistant",
-    "version": "0.2.0",
+    "version": "0.2.1",
     "description": "Embed any website to Obsidian, from now all, you have anything you need in one place.",
     "main": "main.js",
     "scripts": {
         "dev": "node esbuild.config.mjs",
         "build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production",
-        "version": "pnpm version $(git-conventional-commits version) && node version-bump.mjs",
+        "version": "node version-bump.mjs",
         "format": "prettier --write ."
     },
     "keywords": [],

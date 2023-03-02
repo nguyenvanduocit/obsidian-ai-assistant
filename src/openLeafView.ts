@@ -17,9 +17,9 @@ export const openLeafView = async (
 }
 
 const createView = async (
-  workspace: Workspace,
-  id: string,
-  position?: FramePosition
+    workspace: Workspace,
+    id: string,
+    position?: FramePosition
 ): Promise<WorkspaceLeaf> => {
     let leaf: WorkspaceLeaf | undefined
     switch (position) {

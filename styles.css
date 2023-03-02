@@ -30,16 +30,16 @@
     overflow-y: auto;
 }
 
-.ai-assistant--message{
+.ai-assistant--message {
     margin-bottom: 20px;
 }
 
-.ai-assistant--message.user{
+.ai-assistant--message.user {
     display: flex;
     justify-content: flex-end;
 }
 
-.ai-assistant--message-content{
+.ai-assistant--message-content {
     display: inline-block;
     padding: 10px;
     border-radius: 10px;
@@ -48,7 +48,7 @@
     white-space: pre-wrap;
 }
 
-.ai-assistant--input{
+.ai-assistant--input {
     grid-row: 2 / 3;
     border-top: 1px solid var(--border-color);
     padding: 10px 10px;
@@ -57,7 +57,7 @@
     grid-template-columns: 1fr 100px;
 }
 
-.ai-assistant--input-text{
+.ai-assistant--input-text {
     background: var(--background-modifier-form-field);
     border: var(--input-border-width) solid var(--background-modifier-border);
     color: var(--text-normal);
@@ -68,10 +68,10 @@
     outline: none;
 }
 
-.ai-assistant--input textarea{
+.ai-assistant--input textarea {
     height: 100%;
 }
 
-.ai-assistant--input button{
+.ai-assistant--input button {
     margin-left: 10px;
 }
