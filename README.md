@@ -1,4 +1,4 @@
-[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/0cWN_JhoZm4/0.jpg)](https://www.youtube.com/watch?v=0cWN_JhoZm4)
+[![IMAGE ALT TEXT HERE](https://www.youtube.com/watch?v=6YktLCGpz5s&ab_channel=12Bit)
 
 # Obsidian AI Assistant
 
