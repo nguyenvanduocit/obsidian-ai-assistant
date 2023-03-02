@@ -1,6 +1,6 @@
 {
     "name": "obsidian-ai-assistant",
-    "version": "0.2.2",
+    "version": "0.2.3",
     "description": "Embed any website to Obsidian, from now all, you have anything you need in one place.",
     "main": "main.js",
     "scripts": {
