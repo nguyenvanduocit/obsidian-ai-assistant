@@ -1,7 +1,7 @@
 {
 	"id": "ai-assistant",
 	"name": "AI Assistant",
-	"version": "0.2.4",
+	"version": "0.2.5",
 	"minAppVersion": "0.15.0",
 	"description": "A plugin for Obsidian that uses OpenAI's API to assist users in their note-taking and writing process",
 	"author": "duocnv",
