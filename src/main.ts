@@ -81,12 +81,12 @@ export default class AiAssistantPlugin extends Plugin {
     }
     hideLoadingModal() {
         if (this.loadingModal !== null) {
-            this.loadingModal.close()
+            this.loadingModal.forceClose()
         }
     }
     setupCommands() {
         this.addCommand({
-            id: 'ai-assistant-complete',
+            id: 'complete',
             name: 'Complete',
             editorCallback: async (editor: Editor) => {
                 await this.aiComplete(editor)
@@ -94,20 +94,12 @@ export default class AiAssistantPlugin extends Plugin {
         })
 
         this.addCommand({
-            id: 'ai-assistant-rename-file',
+            id: 'rename-file',
             name: 'Rename file',
             editorCallback: async (editor: Editor) => {
                 await this.aiRenameFile(
                     this.app.workspace.getActiveFile() as TFile
                 )
-            }
-        })
-
-        this.addCommand({
-            id: 'ai-assistant-chat',
-            name: 'Chat',
-            editorCallback: async (editor: Editor) => {
-                editor.replaceSelection('&InvisibleComma;')
             }
         })
     }
@@ -145,9 +137,20 @@ export default class AiAssistantPlugin extends Plugin {
                             await this.aiComplete(editor)
                         })
                     })
-
-                    return
                 }
+
+                menu.addItem((item) => {
+                    item.setTitle('AI translate').onClick(
+                        async () => {
+                            this.showLoadingModal()
+                            const translated = await this.translate(selection)
+                            if (translated) {
+                                editor.replaceSelection(translated)
+                            }
+                            this.hideLoadingModal()
+                        }
+                    )
+                })
 
                 menu.addItem((item) => {
                     item.setTitle('AI explain').onClick(async () => {
@@ -186,6 +189,7 @@ export default class AiAssistantPlugin extends Plugin {
 
                 menu.addItem((item) => {
                     item.setTitle('AI make longer').onClick(async () => {
+
                         await this.openRightView(
                             this.settings.makeLonger.replace(
                                 '{text}',
@@ -291,11 +295,7 @@ export default class AiAssistantPlugin extends Plugin {
         })
 
         this.clearStatusBarItem()
-        // trim new line
-        return data.choices
-            .pop()
-            ?.message?.content?.trim()
-            .replace(/\n\n/g, '\n')
+        return data.choices.pop()?.message?.content?.trim()
     }
     // status bar
     statusBarItem: HTMLElement | null = null
@@ -320,5 +320,22 @@ export default class AiAssistantPlugin extends Plugin {
     }
     async saveSettings() {
         await this.saveData(this.settings)
+    }
+
+    private async translate(string: string)    {
+        const messages: Array<ChatCompletionRequestMessage> = [
+                {
+                    role: 'system',
+                    content:
+                        "You are a helpful translator, you will help to translate the user's text to English, only return the translated text, do not markup the answer. Don't change the punctuation. Do not translate code blocks or links."
+                },
+                {
+                    role: 'user',
+                    content: "Translate the following markdown text: \n\n" + string
+                }
+            ]
+        const translated = await this.createCompletion(messages)
+
+        return translated
     }
 }
