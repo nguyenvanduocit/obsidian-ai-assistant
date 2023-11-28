@@ -1,5 +1,5 @@
 import { App, Modal, Setting } from 'obsidian'
-import { createHelpLinks } from './helpLinks'
+import { createHelpLinks } from '../fns/createHelpLinks'
 
 export class ModalOnBoarding extends Modal {
     constructor(app: App) {

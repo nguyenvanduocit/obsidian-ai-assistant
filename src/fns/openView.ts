@@ -1,6 +1,6 @@
 import { Workspace, WorkspaceLeaf } from 'obsidian'
 
-export const openLeafView = async (
+export const openView = async (
     workspace: Workspace,
     id: string,
     position?: FramePosition

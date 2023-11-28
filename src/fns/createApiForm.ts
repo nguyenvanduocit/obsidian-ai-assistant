@@ -1,5 +1,5 @@
-import AiAssistantPlugin from './main'
-import { Notice, Setting } from 'obsidian'
+import AiAssistantPlugin from '../main'
+import {Notice, Setting, TextComponent} from 'obsidian'
 
 export const createApiForm = (
     containerEl: HTMLElement,
@@ -20,6 +20,18 @@ export const createApiForm = (
                     apiKey = value
                 })
         )
+
+    new Setting(containerEl)
+    .setName('Model')
+    .setDesc('Enter the model you want to use')
+    .addText((text: TextComponent) => {
+        text.setPlaceholder('Enter model here')
+            .setValue(plugin.settings.model || '')
+            .onChange(async (value: string) => {
+                plugin.settings.model = value;
+                await plugin.saveSettings();
+            });
+    });
 
     // temperature
     new Setting(containerEl)

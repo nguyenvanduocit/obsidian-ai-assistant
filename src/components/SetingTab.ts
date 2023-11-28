@@ -1,7 +1,7 @@
 import { App, PluginSettingTab, Setting } from 'obsidian'
-import AiAssistantPlugin from './main'
-import { createApiForm } from './apiForm'
-import { createHelpLinks } from './helpLinks'
+import AiAssistantPlugin from '../main'
+import { createApiForm } from '../fns/createApiForm'
+import { createHelpLinks } from '../fns/createHelpLinks'
 
 export class SettingTab extends PluginSettingTab {
     plugin: AiAssistantPlugin
@@ -20,8 +20,6 @@ export class SettingTab extends PluginSettingTab {
         createApiForm(containerEl, this.plugin)
 
         containerEl.createEl('hr')
-
-        const settingContainerEl = containerEl.createDiv('setting-container')
 
         containerEl.createEl('h3', { text: 'Help' })
 
